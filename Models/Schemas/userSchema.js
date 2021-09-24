@@ -1,6 +1,22 @@
 const mongoose = require("mongoose")
 
-const UserSchema = new mongoose.Schema({
+
+// module.exports = new mongoose.Schema({
+//     username:String,
+//     email:String,
+//     phone:Number,
+//     password:String,
+//     preferredLocation:Array,
+//     constructor:Boolean,
+//     constructorId:String,
+//     companyServices:Array,
+//     address:Object,
+//     photo:String,
+//     coverPhoto:String
+
+//  })
+
+module.exports = new mongoose.Schema({
     username:{
         type: String,
         required: [true, 'username is required*']
@@ -15,13 +31,13 @@ const UserSchema = new mongoose.Schema({
     },
     phone:{
         type:Number,
-        required:[true, "Enter Phone Number*"]
+        required:true
     },
     preferredLocation:{
         type:Array,
         required:[true, "Enter preferred location*"]
     },
-    constructor:{
+    constructorPower:{
         type:Boolean
     },
     constructorId:{
@@ -37,9 +53,9 @@ const UserSchema = new mongoose.Schema({
         type:String
     },
     address:{
-        type:Object
+        type: Object
     }
 
 })
 
-module.exports=UserSchema
+ 

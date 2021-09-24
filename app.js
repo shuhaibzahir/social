@@ -4,17 +4,24 @@ require('dotenv').config()
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const cors = require('cors');
 // databse require
 var db = require("./config/databaseConnection")
 // routers import 
 var usersRouter = require('./routes/users');
 
 var app = express();
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+  })
+);
 
 db.dbConnect(process.env.MONGODB_URL)
 // view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'hbs');
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'hbs');
 
 app.use(logger('dev'));
 app.use(express.json());

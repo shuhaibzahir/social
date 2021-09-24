@@ -5,8 +5,10 @@ const validate = (req, res, next) => {
     const errors = validationResult(req)
     if(errors.isEmpty()){
         next()
+        return
     }
-    const catchingErr = errors.array().map((err)=> {
+     
+    const catchingErr = errors.array({ onlyFirstError: true }).map((err)=> {
         return {[err.param]:err.msg}
     })
 

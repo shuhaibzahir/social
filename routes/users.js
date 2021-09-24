@@ -4,5 +4,5 @@ const {userSignup} = require("../Middleware/validator/Allrules")
 const ValidateResult = require("../Middleware/validator/ValidationResult")
 const {Signup} = require("./usersControls")
 
-router.post("/",userSignup(),ValidateResult,Signup)
+router.post("/userSignup",userSignup(),ValidateResult,Signup)
 module.exports = router;
