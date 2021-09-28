@@ -7,5 +7,5 @@ const {Signup,SignIn,applyForConstructor} = require("./usersControls")
 
 router.post("/userSignup",userSignup(),ValidateResult,Signup)
 router.post("/userSignin",SignIn)
-router.post("/applay/constructor/",validateToken,applyForConstructor)
+router.put("/applay/constructor/",validateToken,applyForConstructor)
 module.exports = router;

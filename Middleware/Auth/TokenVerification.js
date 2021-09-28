@@ -1,14 +1,22 @@
 const jwt = require("jsonwebtoken")
+const userHelper = require("../../Models/helpers/user")
 const validateToken=(req,res,next)=>{
-    console.log(req.header)
-    if (req.header.Authorization){
-        let token = req.header.Authorization.replace("Bearer ","")
+    
+    if (req.headers.authorization){
+        let token = req.headers.authorization.replace("Bearer ","")
         let verified = jwt.verify(token,process.env.JWTPRIVATE_KEY)
-        console.log(verified)
-        console.log(verified.userId)
-        next()
+         if(verified.userId){
+            userHelper.getOneUser(verified.userId).then((result)=>{
+                req.body.userId = verified.userId
+                next()
+            }).catch((err)=>{
+                res.status(401).json({apiError:"Un Authorized"})
+                return
+            })
+         }  
+       
     }else{
-        res.status(401).json({apiEror:"Un Authorized"})
+        res.status(401).json({apiError:"Un Authorized"})
         return
     }
     

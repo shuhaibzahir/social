@@ -67,5 +67,46 @@ module.exports={
                 console.log(error)
             }
         })
+    },
+    getOneUser:(userId)=>{
+        return new Promise((resolve,reject)=>{
+            try{
+                User.findOne({_id:userId},(err,result)=>{
+                    if(err){
+                        console.log(err)
+                    }else{
+                        if(result){
+                            resolve(result)
+                        }else{
+                            reject("not found")
+                        }
+                    }
+                })
+            }catch(error){
+                console.log(error)
+            }
+        })
+    },
+    applyForConstructor:(data)=>{
+        return new Promise(async(resolve,reject)=>{
+            const userid = data.userId
+
+            const userExist = await User.findOne({constructorId:data.constructorId})
+            if(userExist) reject("Construcot Id Already Registerd")
+
+
+            User.findOneAndUpdate({_id:userid},{$set:{
+                constructorId:data.constructorId,
+                companyName:data.companyName,
+                services:data.services,
+                address:data.address,
+                applied:"pending"
+            }}).then(async(result)=>{
+                let newDetails = await User.findOne({_id:data.userId})
+                resolve(newDetails)
+             }).catch((err)=>{
+                console.log(err)
+            })
+        })
     }
 }
