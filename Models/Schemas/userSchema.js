@@ -37,6 +37,13 @@ module.exports = new mongoose.Schema({
         type:Array,
         required:[true, "Enter preferred location*"]
     },
+    companyName:{
+        type:String,
+    },
+    applied:{
+        type:String,
+        default:"not"
+    },
     constructorPower:{
         type:Boolean
     },

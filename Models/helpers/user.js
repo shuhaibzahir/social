@@ -34,7 +34,8 @@ module.exports={
                  password:hash,
                  phone:data.phone,
                  email:data.email,
-                 preferredLocation:data.preferredLocation
+                 preferredLocation:data.preferredLocation,
+                 constructorPower:false
              })
              
                userData.save((err,userSavedData)=>{
@@ -48,6 +49,23 @@ module.exports={
             }
           
               
+        })
+    },
+    userSignIn:(data)=>{
+        return new Promise ((resolve, reject)=>{
+            try{
+                User.findOne({email:data.email}).then(async(result)=>{
+                    
+                    if(!result){
+                        reject("Invalid Credential")
+                    }else{
+                        let successPass = await bcrypt.compare(data.password,result.password)
+                        successPass?resolve(result):reject("Invalid Credential")
+                    }
+                })
+            }catch (error){
+                console.log(error)
+            }
         })
     }
 }

@@ -1,16 +1,17 @@
-
-const { response } = require("express")
+ 
 const userHelper = require("../Models/helpers/user")
+const jwt = require("jsonwebtoken")
+ 
+ 
 
-
-// user signup 
+// user signup ....................
 const Signup=(req,res,next)=>{
      const data = req.body
      console.log(req.body)
     try{
-        userHelper.userSignUp(data).then((userSignupData)=>{
-             console.log(userSignupData)
-            res.status(200).json({result:userSignupData})
+        userHelper.userSignUp(data).then(async(userSignupData)=>{
+            let userToken = jwt.sign({userId:userSignupData._id },process.env.JWTPRIVATE_KEY );
+            res.status(200).json({user:userSignupData,token:userToken})
         }).catch((er)=>{
             console.log(er)
             res.status(422).json({apiError:er})
@@ -19,20 +20,31 @@ const Signup=(req,res,next)=>{
         console.log(error)
     }
 }
-const SignIN=(req,res,next)=>{
+// user Login ...................
+const SignIn=(req,res,next)=>{
     const data = req.body
-    console.log(req.body)
+    
    try{
-       userHelper.userSignUp(data).then((userSignupData)=>{
-            console.log(userSignupData)
-           res.status(200).json({result:userSignupData})
-       }).catch((er)=>{
-           console.log(er)
-           res.status(401).json({apiError:er})
-       })
+    userHelper.userSignIn(data).then((success)=>{
+      let userToken = jwt.sign({userId:success._id },process.env.JWTPRIVATE_KEY );
+          res.status(200).json({user:success,token:userToken})
+    }).catch(err=>{
+        console.log(err)
+        res.status(401).json({apiError:err})
+    })
    }catch (error){
        console.log(error)
    }
 }
+// userinfo
 
-module.exports={Signup}
+
+
+const applyForConstructor = (req,res,next)=>{
+    try{
+  console.log(req.body)
+    }catch(error){
+        console.log(error.message)
+    }
+}
+module.exports={Signup,SignIn,applyForConstructor}

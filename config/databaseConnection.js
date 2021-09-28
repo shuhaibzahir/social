@@ -4,7 +4,7 @@ const mongoose = require("mongoose")
 module.exports={
     dbConnect:async(url)=>{
         try{
-           await mongoose.connect(url).then(()=>{
+           await mongoose.connect(url,{ useNewUrlParser: true }).then(()=>{
                console.log("database connected successfully")
            })
         }catch(error){
