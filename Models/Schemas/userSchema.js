@@ -44,8 +44,13 @@ module.exports = new mongoose.Schema({
         type:String,
         default:"not"
     },
+    status:{
+        type:Boolean,
+        default:true
+    },
     constructorPower:{
-        type:Boolean
+        type:Boolean,
+        default:false
     },
     constructorId:{
         type:String

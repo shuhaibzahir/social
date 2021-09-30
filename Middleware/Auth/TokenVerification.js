@@ -7,8 +7,13 @@ const validateToken=(req,res,next)=>{
         let verified = jwt.verify(token,process.env.JWTPRIVATE_KEY)
          if(verified.userId){
             userHelper.getOneUser(verified.userId).then((result)=>{
+               if(result.status){
                 req.body.userId = verified.userId
                 next()
+               }else{
+                   res.status(401).json({apiError:"User  Blocked"})
+                   return
+               }
             }).catch((err)=>{
                 res.status(401).json({apiError:"Un Authorized"})
                 return

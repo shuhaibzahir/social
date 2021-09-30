@@ -58,9 +58,16 @@ module.exports={
                     
                     if(!result){
                         reject("Invalid Credential")
+
                     }else{
-                        let successPass = await bcrypt.compare(data.password,result.password)
-                        successPass?resolve(result):reject("Invalid Credential")
+                    
+                        if(result.status){
+                            console.log("evide ethi")
+                            let successPass = await bcrypt.compare(data.password,result.password)
+                           successPass?resolve(result):reject("Invalid Credential")
+                        }else{
+                            reject("User Blocked By Admin ")
+                        }
                     }
                 })
             }catch (error){
@@ -76,7 +83,8 @@ module.exports={
                         console.log(err)
                     }else{
                         if(result){
-                            resolve(result)
+                           resolve(result)
+                            
                         }else{
                             reject("not found")
                         }

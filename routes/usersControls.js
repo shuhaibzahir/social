@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken")
 // user signup ....................
 const Signup=(req,res,next)=>{
      const data = req.body
-     console.log(req.body)
+      
     try{
         userHelper.userSignUp(data).then(async(userSignupData)=>{
             let userToken = jwt.sign({userId:userSignupData._id },process.env.JWTPRIVATE_KEY );
@@ -32,7 +32,7 @@ const SignIn=(req,res,next)=>{
         console.log(err)
         res.status(401).json({apiError:err})
     })
-   }catch (error){
+   }catch (error){ 
        console.log(error)
    }
 }
