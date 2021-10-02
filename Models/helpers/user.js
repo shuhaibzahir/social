@@ -108,7 +108,8 @@ module.exports={
                 companyName:data.companyName,
                 services:data.services,
                 address:data.address,
-                applied:"pending"
+                applied:"pending",
+                rejected:false
             }}).then(async(result)=>{
                 let newDetails = await User.findOne({_id:data.userId})
                 resolve(newDetails)

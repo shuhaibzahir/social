@@ -61,6 +61,10 @@ module.exports = new mongoose.Schema({
     photo:{
         type:String
     },
+    rejected:{
+        type:Boolean,
+        default:false
+    },
     coverPhoto:{
         type:String
     },

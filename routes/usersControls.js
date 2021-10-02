@@ -38,11 +38,7 @@ const SignIn=(req,res,next)=>{
        console.log(error)
    }
 }
-// userinfo
-
-const fileUpload=(req,res,next)=>{
-     console.log(req.file.originalname)
-}
+ 
 
 
 const applyForConstructor = (req,res,next)=>{
@@ -58,4 +54,6 @@ const applyForConstructor = (req,res,next)=>{
         console.log(error.message)
     }
 }
-module.exports={Signup,SignIn,applyForConstructor,fileUpload}
+
+
+module.exports={Signup,SignIn,applyForConstructor}
