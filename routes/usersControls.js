@@ -1,11 +1,9 @@
  
 const userHelper = require("../Models/helpers/user")
 const jwt = require("jsonwebtoken")
-const AWS = require('aws-sdk');
-const s3 = new AWS.S3({
-    accessKeyId: process.env.AWS_ID,
-    secretAccessKey: process.env.SECRET_KEY_AWS
-})
+
+
+
 // user signup ....................
 const Signup=(req,res,next)=>{
      const data = req.body
@@ -55,5 +53,13 @@ const applyForConstructor = (req,res,next)=>{
     }
 }
 
+const fileUpload = (req,res)=>{
+    res.status(200).json({data:req.files})
+}
 
-module.exports={Signup,SignIn,applyForConstructor}
+const fileDelte =(req,res)=>{
+    res.status(200).json(req.files)
+}
+
+
+module.exports={Signup,SignIn,applyForConstructor,fileUpload, fileDelte}
