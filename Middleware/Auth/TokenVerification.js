@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken")
-const userHelper = require("../../Models/helpers/user")
+const userHelper = require("../../Models/helpers/userdb")
 const validateToken=(req,res,next)=>{
    
     if (req.headers.authorization){
@@ -8,7 +8,7 @@ const validateToken=(req,res,next)=>{
          if(verified.userId){
             userHelper.getOneUser(verified.userId).then((result)=>{
                if(result.status){
-                req.body.userId = verified.userId
+                req.session.userId = verified.userId
                 next()
                }else{
                    res.status(401).json({apiError:"User  Blocked"})

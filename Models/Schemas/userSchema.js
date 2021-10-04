@@ -65,7 +65,13 @@ module.exports = new mongoose.Schema({
         type:Boolean,
         default:false
     },
+    coverPhotoKey:{
+        type:String
+    },
     coverPhoto:{
+        type:String
+    },
+    profilePhotoKey:{
         type:String
     },
     address:{

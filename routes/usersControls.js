@@ -1,48 +1,25 @@
  
-const userHelper = require("../Models/helpers/user")
-const jwt = require("jsonwebtoken")
+const userHelper = require("../Models/helpers/userdb")
+const {deleteFromS3} = require("../Middleware/Multer/s3bucket")
 
 
 
-// user signup ....................
-const Signup=(req,res,next)=>{
-     const data = req.body
-      
-    try{
-        userHelper.userSignUp(data).then(async(userSignupData)=>{
-            let userToken = jwt.sign({userId:userSignupData._id },process.env.JWTPRIVATE_KEY );
-            res.status(200).json({user:userSignupData,token:userToken})
-        }).catch((er)=>{
-            console.log(er)
-            res.status(422).json({apiError:er})
-        })
-    }catch (error){
-        console.log(error)
-    }
-}
-// user Login ...................
-const SignIn=(req,res,next)=>{
-    const data = req.body
-    
-   try{
-    userHelper.userSignIn(data).then((success)=>{
-      let userToken = jwt.sign({userId:success._id },process.env.JWTPRIVATE_KEY );
-          res.status(200).json({user:success,token:userToken})
-    }).catch(err=>{
-        console.log(err)
-        res.status(401).json({apiError:err})
+// get one user info 
+const getUserDetails =(req,res)=>{
+    let userId = req.session.userId
+    userHelper.getOneUser(userId).then((result)=>{
+        console.log(result)
+        res.status(200).json({user:result})
+    }).catch((er)=>{
+        res.status(401).json({apiError:er})
     })
-   }catch (error){ 
-       console.log(error)
-   }
 }
- 
-
 
 const applyForConstructor = (req,res,next)=>{
     try{
+    const userID =   req.session.userId
      const data = req.body
-     userHelper.applyForConstructor(data).then((result)=>{
+     userHelper.applyForConstructor(userID,data).then((result)=>{
          res.status(200).json({user:result})
      }).catch((err)=>{
          res.status(402).
@@ -53,13 +30,47 @@ const applyForConstructor = (req,res,next)=>{
     }
 }
 
-const fileUpload = (req,res)=>{
-    res.status(200).json({data:req.files})
+// uploading file
+const fileUpload = async(req,res)=>{
+   try{
+    let response = req.files[0]
+    let key = response.key
+    let link = response.location
+    let fileType = response.mimetype.split("/")[0]
+    let user =  req.session.userId
+    console.log(user)
+    if(!fileType=="image"){
+        res.status(401).json({apiError:"not an image"})
+        return 
+    }
+    let getUserDetails = await userHelper.getOneUser(user)
+    if(getUserDetails.profilePhotoKey){
+        
+     await deleteFromS3(getUserDetails.profilePhotoKey)
+     console.log("deleted")
+    }
+   
+    
+    userHelper.uploadProfilePicture(user,key,link).then((result)=>{
+        console.log(result)
+
+        res.status(200).json({user:result})
+    }).catch(err=>{
+        res.status(401).json({apiError:err})
+    })
+   }catch(error){
+       console.log(error)
+   }    
+    // "mimetype": "image/jpeg",
+    // "mimetype": "video/mp4",
+   
 }
 
+
+// delete file
 const fileDelte =(req,res)=>{
     res.status(200).json(req.files)
 }
 
 
-module.exports={Signup,SignIn,applyForConstructor,fileUpload, fileDelte}
+module.exports={applyForConstructor,fileUpload, fileDelte,getUserDetails}

@@ -24,12 +24,12 @@ var upload = multer({
 })
 
 
-const deleteFromS3 = (req,res,next)=>{
-    s3.deleteObject({ Bucket:process.env.BUKKET_NAME , Key: req.body.key }, (err, data) => {
+const deleteFromS3 = (key)=>{
+    s3.deleteObject({ Bucket:process.env.BUKKET_NAME , Key:key }, (err, data) => {
        if(err){
-           res.status(401).json({apiError:err})
-       }else{
-       next()
+           return {status:false,data:err}
+       } else{
+        return {status:true,data:data }
        }
     });
 }

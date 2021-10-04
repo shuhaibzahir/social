@@ -95,14 +95,13 @@ module.exports={
             }
         })
     },
-    applyForConstructor:(data)=>{
+    applyForConstructor:(userID,data)=>{
         return new Promise(async(resolve,reject)=>{
-            const userid = data.userId
+            const userid = userID
 
             const userExist = await User.findOne({constructorId:data.constructorId})
             if(userExist) reject("Construcot Id Already Registerd")
-
-
+            
             User.findOneAndUpdate({_id:userid},{$set:{
                 constructorId:data.constructorId,
                 companyName:data.companyName,
@@ -115,6 +114,16 @@ module.exports={
                 resolve(newDetails)
              }).catch((err)=>{
                 console.log(err)
+            })
+        })
+    },
+    uploadProfilePicture:(user,key,link)=>{
+        return new Promise((resolve,reject)=>{
+            User.updateOne({_id:user},{$set:{photo:link,profilePhotoKey:key}}).then(()=>{
+                let latestUserDetails= User.findOne({_id:user})
+                resolve(latestUserDetails)
+            }).catch((err)=>{
+                reject(err)
             })
         })
     }

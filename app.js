@@ -1,12 +1,15 @@
 var createError = require('http-errors');
 var express = require('express');
 require('dotenv').config()
-    
+   
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
- 
-
+const { userSignup } = require("./Middleware/validator/Allrules");
+const ValidateResult = require("./Middleware/validator/ValidationResult");
+const {SignIn,Signup}= require("./routes/signinAndSignUp")
+const { validateToken } = require("./Middleware/Auth/TokenVerification");
+var session = require('express-session')
 // databse require
 var db = require("./config/databaseConnection")
 // routers import 
@@ -28,8 +31,24 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
- 
-app.use('/', usersRouter);
+
+app.use(session({
+  secret: '@$#^&$^&*$*$&*',
+  resave: false,
+  saveUninitialized: true,
+  
+}))
+
+
+
+
+
+app.post("/api/userSignup", userSignup(), ValidateResult, Signup);
+app.post("/api/userSignin", SignIn);
+
+// jwttoken applying
+app.use(validateToken)
+app.use('/api', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
