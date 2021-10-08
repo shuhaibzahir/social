@@ -66,6 +66,9 @@ const fileUpload = async(req,res)=>{
    
 }
 
+ 
+
+
 
 // delete file
 const fileDelte =(req,res)=>{

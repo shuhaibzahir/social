@@ -4,22 +4,22 @@ const ObjectId = Schema.Types.ObjectId
 const PostSchema = new mongoose.Schema({
     user:{
         type:ObjectId,
-        require:[true ,"please login"]
+        
     },
     title:{
         type:String,
-        required:[true, "please add title"]
+         
     },
     date:{
         type:Date,
         default: Date.now
     },
-    description:{
+    content:{
         type:String
     },
     privacy:{
         type:String,
-        enum:['public','private']
+        
    },
    like:{
        type:Array
@@ -29,8 +29,25 @@ const PostSchema = new mongoose.Schema({
    },
    reported:{
        type:Boolean
+   },
+   videoType:{
+       type:Boolean
+   },
+   imageType:{
+       type:Boolean
+   },
+   mediaLink:{
+       type:String
+   },
+   mediaKey :{
+       type:String
+   },
+   tags:{
+       type:Array
    }
 
 
 
 })
+
+module.exports = PostSchema
