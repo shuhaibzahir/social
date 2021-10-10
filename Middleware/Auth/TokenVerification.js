@@ -3,6 +3,7 @@ const userHelper = require("../../Models/helpers/userdb")
 const validateToken=(req,res,next)=>{
    
     if (req.headers.authorization){
+      
          let token = req.headers.authorization.replace("Bearer ","")
         let verified = jwt.verify(token,process.env.JWTPRIVATE_KEY)
          if(verified.userId){

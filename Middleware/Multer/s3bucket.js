@@ -12,8 +12,8 @@ var upload = multer({
   storage: multerS3({
     s3: s3,
     bucket: process.env.BUKKET_NAME ,
-    acl:'public-read',
-    metadata: function (req, file, cb) {
+    acl: 'public-read',
+     metadata: function (req, file, cb) {
       cb(null, {fieldName: file.fieldname});
     },
     key: function (req, file, cb) {
@@ -25,11 +25,14 @@ var upload = multer({
 
 
 const deleteFromS3 = (key)=>{
+ 
     s3.deleteObject({ Bucket:process.env.BUKKET_NAME , Key:key }, (err, data) => {
        if(err){
+        
            return {status:false,data:err}
        } else{
-        return {status:true,data:data }
+        
+        return {status:true, data:"data deleted"}
        }
     });
 }

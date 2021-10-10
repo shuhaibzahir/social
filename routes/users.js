@@ -14,7 +14,9 @@ const {
 
  const {
   postUploading,
-  getAllPost
+  getAllPost,
+  getOwnerPosts,
+  deletPost
  } = require("./postControl")
 
 
@@ -24,4 +26,6 @@ router.put("/profile-pic/upload", upload.array("file"), fileUpload);
 router.get("/profile-pic/delete", deleteFromS3, fileDelte);
 router.post("/uploading",upload.array('media'),postUploading)
 router.get("/logged/get/all/post",getAllPost)
+router.get("/user/own/post",getOwnerPosts)
+router.delete("/post/delete/:postId",deletPost)
 module.exports = router;
