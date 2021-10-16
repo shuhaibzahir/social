@@ -6,6 +6,8 @@ module.exports={
         try{
            await mongoose.connect(url,{ useNewUrlParser: true }).then(()=>{
                console.log("database connected successfully")
+           }).catch((err)=>{
+               console.log(err)
            })
         }catch(error){
             console.log(error)

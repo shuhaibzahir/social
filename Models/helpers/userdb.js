@@ -4,11 +4,14 @@ const bcrypt = require("bcrypt")
  const SALTROUND= 10
  
 const UserSchema = require("../Schemas/userSchema")
-// create collection for user
-
- 
+// create collection for user  
 const User = mongoose.model('User',UserSchema )
+const PostSchema = require("../Schemas/postSchema");
+const Post = mongoose.model("Post", PostSchema);
 
+const FollowSchema = require("../Schemas/FollowSchema")
+const Follow = mongoose.model('follow',FollowSchema)
+const ObjectId = mongoose.Types.ObjectId
 module.exports={
     userSignUp:(data)=>{
          
@@ -75,6 +78,34 @@ module.exports={
             }
         })
     },
+    // google signin
+    googleLogin:(data)=>{
+        return new Promise((resolve,reject)=>{
+            let userData =   new User({
+                username:data.name,
+                phone:data.phone,
+                photo:data.imageUrl,
+                email:data.email,
+                preferredLocation:["india,united states"],
+                constructorPower:false,
+                OAuth:true
+        })
+
+        User.findOne({email:data.email}).then((result)=>{
+            if(result){
+                resolve(result)
+            }else{
+                userData.save((err,savedData)=>{
+                    if(err){
+                        console.log(err)
+                    }else{
+                        resolve(savedData)
+                    }
+                })
+            }
+        })
+    })
+   },
     getOneUser:(userId)=>{
         return new Promise((resolve,reject)=>{
             try{
@@ -126,5 +157,59 @@ module.exports={
                 reject(err)
             })
         })
+    },
+    // this is for getting the sudggested users
+
+    getAllRecommendedUsers:(userid)=>{
+        return new Promise(async(resolve,reject)=>{
+             let userLocation =await User.findOne({_id:userid})
+            let followingList = await Follow.findOne({user:userid})
+            let followingPoeple = followingList?followingList.following:[]
+
+            User.find({$and:[{_id:{$nin:followingPoeple}},{_id:{$ne:userid}},{preferredLocation:{$in:userLocation.preferredLocation}},{constructorPower:true}]}).then((result)=>{
+                  resolve(result)
+            }).catch((err)=>{
+                 
+                reject(err)
+            })
+        })
+    },
+    getAProfile:(userId)=>{
+        return new Promise(async(resolve,reject)=>{
+            try{
+            let user = await User.findOne({_id:userId})
+            let posts = await   Post.find({$and:[{user:userId},{privacy:'public'}]}).sort({_id:-1}) 
+            let useNetworkData = await Follow.findOne({user:ObjectId(userId)})
+            resolve({user,posts,useNetworkData})
+            }catch(err){
+                console.log(err)
+            }
+            
+        })
+    },
+    // get useDetails follow and followers
+    getAUserProfileData:(userid)=>{
+        return new Promise((resolve,reject)=>{
+            Follow.findOne({user:userid}).then((result)=>{
+                console.log(result)
+                resolve(result)
+            }).catch((err)=>{
+                reject(err)
+            })
+        })
+    },
+    // finding the user 
+
+    getUsersDetails:(keyword)=>{
+        return new Promise((resolve, reject)=>{
+            User.find({$and:[{username:{ $regex: keyword,  $options: "si" }},{constructorPower:true}]}).then((result)=>{
+               
+                resolve(result)
+            }).catch((err)=>{
+                reject(err)
+            })
+        })
     }
+     
+  
 }

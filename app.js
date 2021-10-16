@@ -7,7 +7,7 @@ var session = require('express-session')
 const cors = require('cors');
 const { userSignup } = require("./Middleware/validator/Allrules");
 const ValidateResult = require("./Middleware/validator/ValidationResult");
-const {SignIn,Signup}= require("./routes/signinAndSignUp")
+const {SignIn,Signup,signInWithGoogle}= require("./routes/signinAndSignUp")
 const { validateToken } = require("./Middleware/Auth/TokenVerification");
 var usersRouter = require('./routes/users');
 
@@ -50,7 +50,7 @@ app.use(session({
  
 app.post("/api/userSignup", userSignup(), ValidateResult, Signup);
 app.post("/api/userSignin", SignIn);
- 
+app.post("/api/signin/with/google",signInWithGoogle)
 // jwttoken applying
 app.use(validateToken)
 app.use('/api', usersRouter);

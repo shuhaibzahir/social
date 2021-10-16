@@ -25,7 +25,7 @@ const PostSchema = new mongoose.Schema({
        type:Array
    },
    comments:{
-       type:String
+       type:Array
    },
    reported:{
        type:Boolean

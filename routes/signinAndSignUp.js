@@ -18,6 +18,29 @@ const Signup=(req,res,next)=>{
        console.log(error)
    }
 }
+
+
+// signin with google
+
+
+
+const signInWithGoogle =(req,res)=>{
+    console.log("this is reached google login")
+    console.log(req.body)
+
+    userHelper.googleLogin(req.body).then(result=>{
+        console.log(result)
+        let userToken = jwt.sign({userId:result._id },process.env.JWTPRIVATE_KEY );
+        res.status(200).json({user:result,token:userToken})
+   
+    }).catch(err=>{
+        res.status(401).json({apiError:err})
+    })
+}
+
+
+
+
 // user Login ...................
  
 const SignIn=(req,res,next)=>{
@@ -36,4 +59,4 @@ const SignIn=(req,res,next)=>{
    }
 }
 
-module.exports={SignIn,Signup}
+module.exports={SignIn,Signup,signInWithGoogle}

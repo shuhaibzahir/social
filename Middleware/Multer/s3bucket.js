@@ -28,11 +28,10 @@ const deleteFromS3 = (key)=>{
  
     s3.deleteObject({ Bucket:process.env.BUKKET_NAME , Key:key }, (err, data) => {
        if(err){
-        
-           return {status:false,data:err}
+            return {status:false,data:err}
        } else{
-        
-        return {status:true, data:"data deleted"}
+        console.log("this is working")
+        return {status:true, data:data}
        }
     });
 }

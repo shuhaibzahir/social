@@ -19,23 +19,23 @@ const mongoose = require("mongoose")
 module.exports = new mongoose.Schema({
     username:{
         type: String,
-        required: [true, 'username is required*']
+         
     },
     email:{
         type: String,
-        required: [true, 'username is required*']
+        
     },
     password:{
         type: String,
-       required: [true, 'password is required*']
+      
     },
     phone:{
         type:Number,
-        required:true
+        
     },
     preferredLocation:{
         type:Array,
-        required:[true, "Enter preferred location*"]
+         
     },
     companyName:{
         type:String,
@@ -76,6 +76,10 @@ module.exports = new mongoose.Schema({
     },
     address:{
         type: Object
+    },
+    OAuth:{
+        type:Boolean,
+        default:false
     }
 
 })
