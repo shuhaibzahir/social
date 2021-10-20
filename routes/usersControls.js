@@ -14,17 +14,30 @@ const getUserDetails =(req,res)=>{
     })
 }
 
+const getNormalUserProfile =(req,res)=>{
+    let userId = req.params.userId
+    userHelper.getOneUser(userId).then((result)=>{
+        console.log(result)
+        res.status(200).json({user:result})
+    }).catch((er)=>{
+        res.status(401).json({apiError:er})
+    })
+}
+
 const applyForConstructor = (req,res,next)=>{
     try{
     const userID =   req.session.userId
      const data = req.body
      userHelper.applyForConstructor(userID,data).then((result)=>{
+         console.log(result)
          res.status(200).json({user:result})
      }).catch((err)=>{
+         console.log(err,"from applay form")
          res.status(402).
          res.status(422).json({apiError:err})
      })
     }catch(error){
+        
         console.log(error.message)
     }
 }
@@ -51,9 +64,7 @@ const fileUpload = async(req,res)=>{
    
     
     userHelper.uploadProfilePicture(user,key,link).then((result)=>{
-        console.log(result)
-
-        res.status(200).json({user:result})
+         res.status(200).json({user:result})
     }).catch(err=>{
         res.status(401).json({apiError:err})
     })
@@ -188,4 +199,4 @@ const getSearchResult=(req,res)=>{
     })
 }
 
-module.exports={applyForConstructor,fileUpload, fileDelte,getUserDetails,suggestedUser,getaProfile,getGuestUserDatas,createAStory,getAllStory,deleteStory,getSearchResult}
+module.exports={applyForConstructor,fileUpload, fileDelte,getUserDetails,suggestedUser,getaProfile,getGuestUserDatas,createAStory,getAllStory,deleteStory,getSearchResult,getNormalUserProfile}

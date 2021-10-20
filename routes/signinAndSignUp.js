@@ -25,11 +25,10 @@ const Signup=(req,res,next)=>{
 
 
 const signInWithGoogle =(req,res)=>{
-    console.log("this is reached google login")
-    console.log(req.body)
+  
 
     userHelper.googleLogin(req.body).then(result=>{
-        console.log(result)
+       
         let userToken = jwt.sign({userId:result._id },process.env.JWTPRIVATE_KEY );
         res.status(200).json({user:result,token:userToken})
    

@@ -141,7 +141,7 @@ module.exports={
                 applied:"pending",
                 rejected:false
             }}).then(async(result)=>{
-                let newDetails = await User.findOne({_id:data.userId})
+                let newDetails = await User.findOne({_id:userid})
                 resolve(newDetails)
              }).catch((err)=>{
                 console.log(err)

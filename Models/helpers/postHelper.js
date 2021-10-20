@@ -71,38 +71,24 @@ module.exports = {
       let PostUsers= await User.find({preferredLocation:{$in:userLocation}},{_id:1})
       let usersID = PostUsers.map((i)=>i._id)
       
-      // Post.aggregate([
-      //   {$match:{user:{$in:usersID}}},
-      //   {$lookup:{
-      //    from:'users',
-      //    localField:"user",
-      //    foreignField:"_id",
-      //    as:"user.details"
-      //  }},
-    
-      //  {$lookup:{
-      //    from:"users",
-      //    localField:"comments.user",
-      //    foreignField:"_id",
-      //    as:"commentedUserDetails"
-      // }}
-
-      //   ]).then((dataCheck)=>{
-      //   console.log(dataCheck[0])
+    await Post.aggregate([
+       {$match:{$and:[{user:{$in:usersID}},{privacy:'public'}]}},
+       {$lookup:{
+         from:'users',
+         foreignField:"_id",
+         localField:"user",
+         as:"userDetails"
+       }},
+       {$unwind:"$userDetails"}
+     ]).then((result)=>{
+       resolve(result)
+     }).catch((err)=>{
+       console.log(err)
+       reject(err)
+     })
       
-      // }).catch((err)=>{
-      //   console.log(err)
-      // })
+
  
-      
-
-
-       Post.find({$and:[{user:{$in:usersID}},{privacy:'public'}]}).sort({_id:-1}).then((datafromPost)=>{
-         
-         resolve(datafromPost)
-       }).catch((error)=>{
-         reject(error)
-       })
 
       //  then take the users which included these same location and take their user name
       //  after that need to check the user name in post collecion then take posts and print if it is not then take the users which included the same locationn and theri following list after that theri

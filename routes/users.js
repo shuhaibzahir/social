@@ -16,7 +16,8 @@ const {
   createAStory,
   getAllStory,
   deleteStory,
-  getSearchResult
+  getSearchResult,
+  getNormalUserProfile
 } = require("./usersControls");
 
  const {
@@ -36,6 +37,20 @@ const {
  unFollowAUser,
  getFollowers
 } = require("./followersControl")
+
+
+const {
+  postConversation,
+  getConversation
+} = require("./conversationControl")
+
+
+const {
+  postMessage,
+  getMessages
+} = require("./messageControl")
+
+
 
 
 router.get("/user/info",getUserDetails)
@@ -58,16 +73,26 @@ router.get("/user/profile/:userId",getaProfile)
 router.get("/user/network/data",getFollowers)
 router.get("/user/network/data/:userId",getGuestUserDatas)
 
-// story section
+// story section    
 
 router.post("/user/story/update",upload.array("file"),createAStory)
 router.get("/user/get/all/stories",getAllStory)
 router.delete("/user/delete/story",deleteStory)
 
  
-// search key word
+// search key word 
 
 router.get("/search/result",getSearchResult)
 
+// post conversation 
+
+router.post("/add/conversation",postConversation)
+router.get("/get/conversation/",getConversation)
+router.get("/get/user/details/:userId",getNormalUserProfile)
  
+
+// post messages 
+router.post("/post/meesages",postMessage)
+router.get("/get/meesages/:conversationId",getMessages)
+
 module.exports = router;

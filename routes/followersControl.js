@@ -1,8 +1,10 @@
 const followHelper = require("../Models/helpers/FollowHelper")
-
-const followAUser =(req,res)=>{
+const conversationHelper = require("../Models/helpers/Conversationhelper")
+const followAUser =async(req,res)=>{
     let currentUser = req.session.userId;
     let targetUser = req.params.target
+   
+      let conversation =  await conversationHelper.createConversation(currentUser,targetUser) 
     followHelper.following(currentUser,targetUser).then((result)=>{
         console.log(result)
         res.status(200).json({result:true})
