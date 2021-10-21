@@ -8,7 +8,7 @@ const Signup=(req,res,next)=>{
      
    try{
        userHelper.userSignUp(data).then(async(userSignupData)=>{
-           let userToken = jwt.sign({userId:userSignupData._id },process.env.JWTPRIVATE_KEY );
+           let userToken = jwt.sign({userId:userSignupData._id },process.env.JWTPRIVATE_KEY );  
            res.status(200).json({user:userSignupData,token:userToken})
        }).catch((er)=>{
            console.log(er)
