@@ -35,7 +35,7 @@ app.use(function (req, res, next) {
   
 
 app.use(cors({
-  origin: '*'
+  origin: "http://localhost:3000"
 }));
 
 db.dbConnect(process.env.MONGODB_URL)
