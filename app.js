@@ -47,13 +47,13 @@ app.use(session({
 
 
  
-app.post("/api/userSignup", userSignup(), ValidateResult, Signup);
-app.post("/api/userSignin", SignIn);
-app.post("/api/signin/with/google",signInWithGoogle)
+app.post("/server/api/userSignup", userSignup(), ValidateResult, Signup);
+app.post("/server/api/userSignin", SignIn);
+app.post("/server/api/signin/with/google",signInWithGoogle)
 // jwttoken applying
 app.use(validateToken)
-app.use('/api', usersRouter);
-app.use('/api/post', usersRouter);
+app.use('/server/api', usersRouter);
+app.use('/server/api/post', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
