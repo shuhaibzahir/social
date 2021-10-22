@@ -22,12 +22,9 @@ var db = require("./config/databaseConnection")
 
 
 var app = express();
-app.use(
-  cors({
-    origin: ['http://localhost:3000' ,"http://localhost:5000","http://52.91.172.14"],
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: '*'
+}));s
 
 db.dbConnect(process.env.MONGODB_URL)
 // view engine setup
