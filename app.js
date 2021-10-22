@@ -25,7 +25,7 @@ var app = express();
 
  
 app.use(cors({
-  origin: ["http://localhost:3000","*"]
+  origin: ["https://master.d3tb2mzjm1zl46.amplifyapp.com","*"]
 }));
 
 db.dbConnect(process.env.MONGODB_URL)
