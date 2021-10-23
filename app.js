@@ -25,7 +25,7 @@ var app = express();
 
  
 app.use(cors({
-  origin: ["https://master.d3tb2mzjm1zl46.amplifyapp.com","http://54.205.19.94","*","http://localhost:3000","https://skyline.shuhaib.host/"]
+  origin: ["https://master.d3tb2mzjm1zl46.amplifyapp.com", "*","http://localhost:3000","https://skyline.shuhaib.host/"]
 }));
 
 db.dbConnect(process.env.MONGODB_URL)
